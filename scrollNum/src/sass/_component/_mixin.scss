@@ -1,0 +1,23 @@
+@mixin por{
+	position: relative;
+}
+@mixin poa{
+	position: absolute;
+}
+@mixin toh{
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  overflow: hidden;
+}
+@mixin wbk{
+  word-break: break-all;
+  word-wrap: break-word;
+}
+@function calRem($n) {
+  @return ($n/12)*1rem;
+}
+@mixin abstl($t:0,$l:0){position: absolute!important;top:$t;left:$l;right:auto!important;bottom:auto!important;}
+@mixin abstr($t:0,$r:0){position: absolute!important;top:$t;left:auto!important;right:$r;bottom:auto!important;}
+@mixin absbl($l:0,$b:0){position: absolute!important;top:auto!important;left:$l;right:auto!important;bottom:$b;}
+@mixin absbr($b:0,$r:0){position: absolute!important;top:auto!important;left:auto!important;right:$r;bottom:$b;}

@@ -1,0 +1,28 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0;}
+table {border-collapse:collapse;border-spacing:0;}
+fieldset,img { border:0;}
+ol,ul {list-style:none;}
+caption,th {text-align:left;}
+h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal;}
+a,
+textarea,
+input,
+input[type=button],
+button {
+    outline: 0;
+    &:focus {
+        outline: 0!important;
+    }
+}
+textarea:disabled{
+	background-color: #ddd;
+}
+i,em{font-style: normal;}
+div[disabled]{background-color: #ddd;}
+body{font-family: microsoft yahei;}
+.gray{color: #999;}
+.fs-12{font-size: 12px;}
+.blue{color: #09f;}
+.role-hide{display: none !important;}
+.role-show{display: inline-block !important;}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{background-color: transparent!important;}

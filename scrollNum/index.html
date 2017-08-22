@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>scrollNumber</title>
+	<link rel="stylesheet" href="dist/css/scroll.css">
+	<script src="libs/jquery.js"></script>
+	<script>
+		$(window).resize(function(){
+		    $("html").css("font-size",~~$(window).width()*12/1920);
+		}).resize();
+		function getBaseSize(){
+		   return document.body.clientWidth /90;
+		}
+
+	</script>
+</head>
+<body>
+
+	<div class="large"><span class="scrollTitle">scroll Large:</span><span class="scrollWrap" id="j-scroll1"></span></div>
+	<div class="middle"><span class="scrollTitle">scroll middle:</span><span class="scrollWrap" id="j-scroll2"></span></div>
+	<div class="small"><span class="scrollTitle">scroll small:</span><span class="scrollWrap" id="j-scroll3"></span></div>
+	
+	
+	
+</body>
+<script src="dist/js/scroll.js"></script>
+
+</html>

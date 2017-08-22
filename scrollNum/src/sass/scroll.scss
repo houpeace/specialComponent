@@ -1,0 +1,54 @@
+@charset "utf-8";
+@import './_component/_mixin';
+@import './_component/_reset';
+.large{    
+	font-size: 3rem;
+}
+.middle{    
+	font-size: 2rem;
+    }
+ .scrollTitle,.scrollWrap{
+ 	display: inline-block;vertical-align: top;
+ 	line-height: 1em;
+ }
+.i-scrollNum{
+	overflow: hidden;width: 0.6em;height: 1em;
+	display: inline-block;margin: 0 0.3rem;
+	&-split{
+		display: inline-block;
+		vertical-align: top;
+	}
+	&-scroll{
+		transition:all 300ms;
+	}
+	.scroll0{
+		margin-top: 0;
+	}
+	.scroll1{
+		margin-top: -1em;
+	}
+	.scroll2{
+		margin-top: -2em;
+	}
+	.scroll3{
+		margin-top: -3em;
+	}
+	.scroll4{
+		margin-top: -4em;
+	}
+	.scroll5{
+		margin-top: -5em;
+	}
+	.scroll6{
+		margin-top: -6em;
+	}
+	.scroll7{
+		margin-top: -7em;
+	}
+	.scroll8{
+		margin-top: -8em;
+	}
+	.scroll9{
+		margin-top: -9em;
+	}
+}
