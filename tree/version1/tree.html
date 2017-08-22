@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tableData</title>
+    <link rel="stylesheet" href="example/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/tree.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="js/levelTree.js"></script>
+    <script>
+        var data = {
+            gender:['男','女','未知'],
+            active:['活跃','高危','沉睡','流失'],
+            level:['金','银','铜','铁']
+        }
+        var obj = {
+            value:["全站用户"],
+            children:{
+                value:['男','女','未知'],
+                children:{
+                    value:['活跃','高危','沉睡','流失'],
+                    children:{
+                        value:['金','银','铜','铁']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+    #wrap{
+        width: 1000px;margin: 0 auto;
+    }        
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div class="levelWrap">
+            <div class="level level_down">
+                <i class="level_icon"></i>
+                <span class="level_name">全部成员</span>
+                <span class="level_count">100,100</span>
+                <span class="level_rate1">整体占比:20%</span>
+                <span class="level_rate2">上级占比:20%</span>
+            </div>
+            <div class="levelWrap">
+                <div class="level level_down">
+                    <i class="level_icon"></i>
+                    <span class="level_name">男性</span>
+                    <span class="level_count">100,100</span>
+                    <span class="level_rate1">整体占比:20%</span>
+                    <span class="level_rate2">上级占比:20%</span>
+                </div>
+
+                <div class="levelWrap">
+                    <div class="level level_down">
+                        <i class="level_icon"></i>
+                        <span class="level_name">活跃</span>
+                        <span class="level_count">100,100</span>
+                        <span class="level_rate1">整体占比:20%</span>
+                        <span class="level_rate2">上级占比:20%</span>
+                    </div>
+                </div>
+                <div class="levelWrap">
+                    <div class="level level_down">
+                        <i class="level_icon"></i>
+                        <span class="level_name">高危</span>
+                        <span class="level_count">100,100</span>
+                        <span class="level_rate1">整体占比:20%</span>
+                        <span class="level_rate2">上级占比:20%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="levelWrap">
+                <div class="level level_down">
+                    <i class="level_icon"></i>
+                    <span class="level_name">女性</span>
+                    <span class="level_count">100,100</span>
+                    <span class="level_rate1">整体占比:20%</span>
+                    <span class="level_rate2">上级占比:20%</span>
+                </div>
+                <div class="levelWrap">
+                    <div class="level level_down">
+                        <i class="level_icon"></i>
+                        <span class="level_name">活跃</span>
+                        <span class="level_count">100,100</span>
+                        <span class="level_rate1">整体占比:20%</span>
+                        <span class="level_rate2">上级占比:20%</span>
+                    </div>
+                </div>
+                <div class="levelWrap">
+                    <div class="level level_down">
+                        <i class="level_icon"></i>
+                        <span class="level_name">高危</span>
+                        <span class="level_count">100,100</span>
+                        <span class="level_rate1">整体占比:20%</span>
+                        <span class="level_rate2">上级占比:20%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="levelSide" class="levelSide">
+        <div class="levelSide_item">全站用户</div>
+        <div class="levelSide_item">性别</div>
+        <div class="levelSide_item">活跃度</div>
+        <div class="levelSide_item">会员种类</div>
+    </div>
+</body>
+<script>
+
+var obj = {
+
+    value:["全站用户"],
+    type:"全站用户",
+    data:[{
+         count:[100000],
+         rate1:[100],
+         rate2:[100]
+     }],
+    children:{
+        value:['男','女','未知'],
+        type:"性别",
+        data:[{
+                count:[100,200,200],
+                rate1:[20,40,40],
+                rate2:[20,40,40],
+            }],
+        children:{
+            value:['活跃','高危','沉睡','流失'],
+            type:"活跃度",
+            data:[{
+                    count:[200,200,200,200],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1]
+                },{
+                    count:[100,200,200,100],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1]
+                },{
+                    count:[100,200,200,100],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1]
+                }]
+        }
+    }
+}
+var addData = {
+    value:['金','银','铜','铁'],
+    type:"会员种类",
+    data:[{
+        count:[200,200,200,200],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,2]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[200,200,200,200],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[200,200,200,200],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[200,200,200,200],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    },{
+        count:[100,200,200,100],
+        rate1:[25,25,25,25],
+        rate2:[20,25,40,1]
+    }]
+}
+
+
+$('#wrap').empty();
+$('#levelSide').empty();
+levelTree.init(obj,$('#wrap'),{sideRoot:$("#levelSide"),renderSide:true});
+
+levelTree.add(addData);
+
+// buildNode(obj,$('#wrap'))
+//     function buildNode(obj,index,opts) {
+        
+//     }
+
+
+    
+</script>
+</html>
