@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <title>人群钻取</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/base.css">
+    <script type="text/javascript" src="../../../assets/libs/libs.js"></script>
+    <script type="text/javascript" src="../../../assets/js/base.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../css/userGroupDrill.css">
+    <script>
+    var isDebug = true;
+    var checkPanelData = {
+        "checkList": [
+            "level",
+            "sex",
+            "lastVisit"
+        ],
+        "optionList": [
+            {
+                "catCode": "userInfo",
+                "catName": "用户信息",
+                "attrs": [
+                    {
+                        "attrCode": "sex",
+                        "attrName": "性别"
+                    },
+                    {
+                        "attrCode": "main4Group",
+                        "attrName": "四大人群"
+                    },
+                    {
+                        "attrCode": "level",
+                        "attrName": "等级"
+                    }
+                ]
+            },
+            {
+                "catCode": "userBehavior",
+                "catName": "用户行为",
+                "attrs": [
+                    {
+                        "attrCode": "lastVisit",
+                        "attrName": "最近访问"
+                    },
+                    {
+                        "attrCode": "lastOrder",
+                        "attrName": "最后一单"
+                    },
+                    {
+                        "attrCode": "firstOrder",
+                        "attrName": "第一单"
+                    }
+                ]
+            }
+        ]
+    }
+    //顶部选择
+    var panelSelectData = {
+        "optionList": [
+            {
+                "catCode": "userInfo",
+                "catName": "用户信息",
+                "attrs": [
+                    {
+                        "attrName": "性别",
+                        "values": [
+                            {
+                                "value": "male",
+                                "text": "男"
+                            },
+                            {
+                                "value": "female",
+                                "text": "女"
+                            },
+                            {
+                                "value": "unknown",
+                                "text": "未知"
+                            }
+                        ],
+                        "attrCode": "sex"
+                    },
+                    {
+                        "attrName": "是否主账户",
+                        "values": [
+                            {
+                                "value": "yes",
+                                "text": "是"
+                            },
+                            {
+                                "value": "no",
+                                "text": "否"
+                            }
+                        ],
+                        "attrCode": "account"
+                    }
+                ]
+            },
+            {
+                "catCode": "channel",
+                "catName": "渠道特征",
+                "attrs": [
+                    {
+                        "attrName": "短信支持标识",
+                        "values": [
+                            {
+                                "value": "yes",
+                                "text": "是"
+                            },
+                            {
+                                "value": "no",
+                                "text": "否"
+                            }
+                        ],
+                        "attrCode": "sms"
+                    }
+                ]
+            }
+        ],
+        "checkList": [
+            {
+                "attrValues": [
+                    "male",
+                    "female"
+                ],
+                "attrCode": "sex"
+            },
+            {
+                "attrValues": [
+                    "yes"
+                ],
+                "attrCode": "sms"
+            }
+        ]
+    }
+    /*var panelSelectData = {"optionList":[{"catCode":"c26","catName":"用户行为","attrs":[{"attrCode":"fo356","attrName":"最后一次访问","values":[{"value":"{\"le\":\"7\",\"ge\":\"1\"}","text":"1-7天"},{"value":"{\"le\":\"15\",\"ge\":\"8\"}","text":"8-15天"},{"value":"{\"le\":\"30\",\"ge\":\"16\"}","text":"16-30天"},{"value":"{\"le\":\"80\",\"ge\":\"31\"}","text":"31-80天"},{"value":"{\"le\":\"160\",\"ge\":\"81\"}","text":"81-160天"},{"value":"{\"le\":\"365\",\"ge\":\"161\"}","text":"161-365天"}]},{"attrCode":"fo357","attrName":"最后一次购买","values":[{"value":"{\"le\":\"7\",\"ge\":\"1\"}","text":"1-7天"},{"value":"{\"le\":\"15\",\"ge\":\"7\"}","text":"8-15天"},{"value":"{\"le\":\"30\",\"ge\":\"16\"}","text":"16-30天"},{"value":"{\"le\":\"80\",\"ge\":\"31\"}","text":"31-80天"},{"value":"{\"le\":\"160\",\"ge\":\"81\"}","text":"81-160天"},{"value":"{\"le\":\"365\",\"ge\":\"161\"}","text":"161-365天"}]}]}],"checkList":[]};*/
+
+    var staticFormData = {"bizScenes":[{"desc":"大留存","code":"1"},{"desc":"全站A促","code":"2"}],"useScenes":[{"desc":"日常营销","code":"1"},{"desc":"跨系统营销","code":"2"},{"desc":"测试人群","code":"3"}],"applyScenes":[{"desc":"CRM","code":"CRM_N"},{"desc":"EM","code":"EM_N"},{"desc":"MMP","code":"MMP_N"}],"defaultApplyScenes":["CRM_N","EM_N"],"maxDrillLayerNum":5,"maxConditionNum":10,"maxOrgIncludeGroupNum":2}
+    //钻取基础人群，全站人群值为""
+    var srcGroupCode ="ug1234";
+    //重新钻取的人群
+    var modGroupCode;
+    //已选择的节点
+    //var selectedNodes = [[{"attrCode":"sex","attrValues":["male"]},{"attrCode":"grade","attrValues":["A"]},{"attrCode":"age","attrValues":["70"]}]]
+    var selectedNodes = []
+    var selectNodesAttr = []
+    ~(function () {
+        var checked,disabled;
+        $.each(staticFormData.applyScenes, function(index, val) {
+            window.checked = "",window.disabled="";
+            if(staticFormData.defaultApplyScenes.indexOf(val.code)>= 0){
+                checked = "checked",disabled="disabled";
+            }
+            $.extend(true,val,{checked:checked,disabled:disabled,name:'sceneCodes'}); 
+        });
+        var attrs;
+        $.each(selectedNodes, function(index, val) {
+            attrs = '';
+            $.each(val, function(i,v) {
+                attrs +=(','+v.attrValues[0]);
+            });
+            selectNodesAttr.push(attrs);
+        });
+    })()
+    </script>
+</head>
+<body>
+   
+    <div class="g-wrap">
+        <!--头部 S-->
+        <div class="g-hd clearfix">
+            <h1 class="g-hd-title pull-left">人群钻取</h1>
+            <span class="g-hd-tips">数据更新于：2016-09-30 9:00:00</span>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-toggle="dialog-open" data-target="#j-side-panel"><em class="icon icon-asterisk"></em>人群钻取</a>
+            </div>
+        </div>
+        <!--头部 E-->
+
+        <!--内容 S-->
+        <div class="g-bd">
+            <!--条件筛选 start -->
+            <div class="panel panel-default panel-select panel-select-down" id="j-panel-select">
+                <div class="panel-heading">
+                    <div class="panel-title clearfix">
+                        <div class="pull-left">
+                            <h2 class="panel-title-name">条件筛选</h2>
+                        </div>
+                        <a class="btn btn-panelOpenCtrl btn-default btn-up pull-right"><em class="icon  icon-angle-up"></em>收起</a>
+                        <a class="btn btn-panelOpenCtrl btn-default btn-down pull-right"><em class="icon  icon-angle-down"></em>展开</a>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <div class="form-inline cui-form-inline" id="j-drill-wrap">
+
+                    </div>
+                      <button type="button" class="btn btn-primary" id="j-select-btn">确定</button>  
+                </div>
+            </div>
+            <!--条件筛选 end -->
+
+            <!--筛选结构树 start -->
+            <div class="panel panel-default panel-tree">
+                <div class="level-outter">
+                    <div id="j-levelTree"></div>
+                    <div id="j-levelSide" class="level-side"></div>                    
+                </div>
+            </div>
+            
+            <!--筛选结构树 end -->
+            <!--底部已选择人群对话框 start-->
+            <div class="level-bottom" id="j-levelBottom">
+               
+            </div>
+            <!--底部已选择人群对话框 end-->
+           
+            
+            <!-- start-->
+            <!-- end-->
+
+        </div>
+        <!--内容 E-->
+    </div>
+    <!--右侧弹窗 start-->
+    <div class="side-panel" id="j-side-panel" style="display: none;">
+        <div class="side-panel-box">
+           <div class="side-panel-hd">
+               <i class="side-panel-icon icon icon-reorder"></i><div class="side-panel-title">钻取结构图</div>
+           </div>
+           <div class="side-panel-bd">
+                 <!--指标选择 start-->
+                <div class="level-contruct-floor level-contruct-floor1">
+                    <div class="level-contruct-ctrl level-contruct-ctrl-parent">
+                        <div class="level-contruct-ctrl-hd">指标类目</div>
+                        <ul class="level-contruct-ctrl-bd">
+                        </ul>
+                    </div>
+                    <div class="level-contruct-ctrl level-contruct-ctrl-child">
+                        <div class="level-contruct-ctrl-hd">指标选择(最多<span class="max">5</span>个)</div>
+                        <div class="level-contruct-ctrl-bd">
+                            <ul class=" evel-contruct-ctrl-bd-checkList">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--指标选择 end-->
+                <!--拖动指标 start-->
+                <div class="level-contruct-floor level-contruct-floor2">
+                    <div class="level-contruct-ctrl level-contruct-ctrl2">
+                        <div class="level-contruct-ctrl-hd">指标类目(可手动拖动改变顺序)</div>
+                        <ul class="level-contruct-ctrl-bd level-contruct-drag">
+                            
+                        </ul>
+                    </div>
+                </div>
+                <!--拖动指标 end-->
+            </div>
+            <div class="side-panel-fd clearfix">
+                <button type="button" class="btn btn-success" id="j-drag-btn">确定</button>
+                <button type="button" class="btn btn-default"  data-toggle="dialog-close" data-target="#j-side-panel">返回</button>
+            </div>
+        </div>
+    </div>
+    <!--右侧弹窗 end-->
+
+
+
+</body>
+
+<script>
+    var treeData = {
+    "valText" : ["钻取人群006"],
+    "valCode" : ["ROOT"],
+    "attrCode" : "ROOT",
+    "attrText" : "钻取人群006",
+    "data" : [{
+            "count" : [1500],
+            "parentRatio" : [100.0],
+            "totalRatio" : [100.0]
+        }
+    ],
+    "child" : {
+        "valText" : ["男", "女"],
+        "valCode" : ["male", "female"],
+        "attrCode" : "sex",
+        "attrText" : "性别",
+        "data" : [{
+                "count" : [750, 750],
+                "parentRatio" : [50.0, 50.0],
+                "totalRatio" : [50.0, 50.0]
+            }
+        ],
+        "child" : {
+            "valText" : ["金牌", "铜牌", "铁牌"],
+            "valCode" : ["A", "B", "C"],
+            "attrCode" : "grade",
+            "attrText" : "会员等级",
+            "data" : [{
+                    "count" : [200, 200, 200],
+                    "parentRatio" : [33.3, 33.3, 33.3],
+                    "totalRatio" : [13.3, 13.3, 13.3],
+                    "checked": [true,false,false]
+                }, {
+                    "count" : [300, 300, 300],
+                    "parentRatio" : [33.3, 33.3, 33.3],
+                    "totalRatio" : [20.0, 20.0, 20.0]/*,
+                    "select" : [true,false,false]*/
+                }
+            ],
+            "child" : {
+                "valText" : ["70后", "80后", "90后"],
+                "valCode" : ["70", "80", "90"],
+                "attrCode" : "age",
+                "attrText" : "年龄",
+                "data" : [{
+                        "count" : [50, 50, 50],
+                        "parentRatio" : [33.3, 33.3, 33.3],
+                        "totalRatio" : [3.3, 3.3, 3.3]
+                    }, {
+                        "count" : [100, 100, 100],
+                        "parentRatio" : [33.3, 33.3, 33.3],
+                        "totalRatio" : [6.7, 6.7, 6.7]
+                    }, {
+                        "count" : [50, 50, 50],
+                        "parentRatio" : [33.3, 33.3, 33.3],
+                        "totalRatio" : [3.3, 3.3, 3.3]
+                    }, {
+                        "count" : [60, 60, 60],
+                        "parentRatio" : [33.3, 33.3, 33.3],
+                        "totalRatio" : [4.0, 4.0, 4.0]
+                    }, {
+                        "count" : [150, 150, 150],
+                        "parentRatio" : [33.3, 33.3, 33.3],
+                        "totalRatio" : [10.0, 10.0, 10.0]
+                    }, {
+                        "count" : [90, 90, 90],
+                        "parentRatio" : [33.3, 33.3, 33.3],
+                        "totalRatio" : [6.0, 6.0, 6.0]
+                    }
+                ],
+                "child" : null
+            }
+        }
+    }
+}
+    var checkedTreeData = {
+
+    }
+
+</script>
+
+<!--人群透视图 模板-->
+
+<script type="text/tempalte" id="tlp-createGroup">
+    <div  class="form-horizontal cui-form-horizontal">
+        <div class="modal-actiontype form-control-wrap radio">
+            <label class="form-radio-label">
+                <input type="radio" class="j-selectCreateType" name="groupType"" value="single" checked="">生成独立人群
+           </label>
+            <label class="form-radio-label">
+                <input type="radio" class="j-selectCreateType" name="groupType"" value="combine">生成合并人群
+           </label>
+        </div>
+        <div class="dialog-drill-wrap">
+                    
+        </div>
+    </div>
+</script>
+<script type="text/tempalte" id="tlp-createGroup-item">
+    <form class="dialog-drill-item" data-conditions='@{conditions}'>
+        <div class="dialog-drill-item-type">
+            <p>
+                <span class="dialog-drill-item-type-label">已选择条件</span>
+                <span class="dialog-drill-item-type-text">@{selectType}</span>
+            </p>
+        </div>
+        <div class="form-group form-item">
+            <label class="form-item-label form-required">人群名称</label>
+            <div class="form-control-wrap">
+                <input type="text" class="form-control form-item-input" name="groupName" placeholder="支持汉字字母下划线，最大20个字符">
+            </div>
+        </div>
+
+        <div class="form-group form-item">
+            <label class="form-item-label form-required">业务场景</label>
+            <div class="form-control-wrap">
+                <select name="bizSceneCode" class="form-control form-item-select">
+                    <option class="form-item-option" value="">请选择</option>
+                    @{bizScenesOptions}
+                </select>
+            </div>
+        </div>
+        <div class="form-group form-item">
+            <label class="form-item-label form-required">营销类型</label>
+            <div class="form-control-wrap">
+                <select name="actType" class="form-control form-item-select">
+                    <option class="form-item-option" value="">请选择</option>
+                    @{useScenesOptions}
+                </select>
+            </div>
+        </div>
+        <div class="form-group form-item form-item-activitySceneWrap"  style="display: none">
+            <label class="form-item-label form-required">应用场景</label>
+            <div class="form-control-wrap checkbox activitySceneWrap">
+            @{applyScenesCheckeds}
+            </div>
+        </div>
+        <div class="form-group form-item form-item-autoRun">
+            <label class="form-item-label form-required">执行类型</label>
+            <div class="form-control-wrap radio">
+                <label class="form-radio-label">
+                   <input type="radio" name="runType"" value="2" checked="">每天更新
+                </label>
+                <label class="form-radio-label">
+                   <input type="radio" name="runType"" value="1">定时执行一次
+                </label>
+            </div>
+        </div>
+        <div class="form-group form-item form-item-datetimepicker">
+            <label class="form-item-label form-required">执行时间</label>
+            <div class="form-control-wrap radio">
+                <label class="form-radio-label">
+                    <input type="radio" name="immediating" value="1" >立即执行
+                </label>
+                <label class="form-radio-label">
+                    <input type="radio" name="immediating" value="0" checked="">自定义时间
+                </label>
+                <span class="form-label-datetimepicker">
+                    <input type="text" name="immediateTime" class="form-control form-item-input custom-datetime" name="" placeholder="请选择执行时间，精确到分">
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group form-item">
+            <label class="form-item-label form-required">有效期</label>
+            <div class="form-control-wrap radio"> 
+                <span class="form-label-datetimepicker">
+                   <input type="text" class="form-control form-item-input validity-datetime" name="expireTime" placeholder="选择有效期" >
+                </span>  
+            </div>
+        </div>
+        <div class="form-group form-item form-item-nonetitle form-item-tip">
+            <div class="form-control-wrap checkbox">
+              <label class="form-checkbox-label gray">
+                <input type="checkbox" name="isImmediateDist" value="1">跑数完成自动计算透视图（请谨慎选择，如透视图计算占取过多资源可能会影响到重要的人群跑数）
+              </label>
+            </div>
+        </div>
+
+
+    </form>
+</script>
+<script type="text/tempalte" id="tlp-joinGroup">
+    <div class="form-horizontal cui-form-horizontal">
+        <div class="modal-actiontype form-control-wrap radio">
+            <label class="form-radio-label">
+                <input type="radio" class="j-selectCreateType" name="joinType"" value="single" checked>独立加入群组
+           </label>
+            <label class="form-radio-label">
+                <input type="radio" class="j-selectCreateType" name="joinType"" value="combine">合并加入群组
+           </label>
+        </div>
+        <div class="dialog-drill-wrap"></div>
+        <div class="dialog-group-wrap group-wrap">
+            <div class="group-hd">
+                <a class="btn btn-success" data-view="joinView"><em class="icon icon-group"></em>选择组</a>
+                <a class="btn btn-default" data-view="createView"><em class="icon icon-edit"></em>创建组</a>
+            </div>
+            <div class="group-bd">
+              
+            </div>   
+            <div class="group-infor">
+                <p class="group-text">已添加人群（可编辑人群优先级，系统将按照顺序对人群去重）</p>
+                <div class="group-panel">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/tempalte" id="tlp-joinGroup-item">
+    <form class="dialog-drill-item" data-conditions='@{conditions}' data-codes = '@{codes}'>
+        <div class="dialog-drill-item-type">
+            <p>
+                <span class="dialog-drill-item-type-label">已选择条件</span>
+                <span class="dialog-drill-item-type-text">@{selectType}</span>
+            </p>
+        </div>
+        <div class="form-group form-item">
+            <label class="form-item-label form-required">人群名称</label>
+            <div class="form-control-wrap">
+                <input type="text" class="form-control form-item-input" name="groupName" placeholder="支持汉字字母下划线，最大20个字符">
+            </div>
+        </div>
+        <div class="form-group form-item form-item-nonetitle form-item-tip">
+            <div class="form-control-wrap checkbox">
+              <label class="form-checkbox-label gray">
+                <input type="checkbox" name="isImmediateDist" value="1">跑数完成自动计算透视图（请谨慎选择，如透视图计算占取过多资源可能会影响到重要的人群跑数）
+              </label>
+            </div>
+        </div>
+    </form>
+</script>
+<!--加入已有人群-->
+<script type="text/tempalte" id="tlp-joinGroup-join">
+    <div class="joinGroup-childView joinView">
+        <form class="joinViewForm">
+            <div class="form-group form-item">
+                <label class="form-item-label form-item-label-short form-required">选择人群组</label>
+                <div class="form-control-wrap">
+                    <input type="text" class="form-control form-item-input" name="group" placeholder="支持汉字字母下划线，最大20个字符">
+                </div>
+                <a class="btn btn-success selectGroup-submit" id="j-selectGroup-submit" >确定</a>
+            </div>
+        </form>
+    </div>
+</script>
+
+<!--新建人群组-->
+<script type="text/tempalte" id="tlp-joinGroup-create">
+    <div class="joinGroup-childView createView">
+        <form class="createViewForm">
+            <div class="form-group form-item">
+                <label class="form-item-label form-required">人群组名称</label>
+                <div class="form-control-wrap">
+                    <div class="form-control-wrap">
+                        <input type="text" class="form-control form-item-input" name="organizeName" placeholder="支持汉字字母下划线，最大20个字符">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-item">
+                <label class="form-item-label form-required">业务场景</label>
+                <div class="form-control-wrap">
+                    <select name="bizSceneCode" class="form-control form-item-select">
+                        <option class="form-item-option" value>请选择</option>
+                        @{bizScenesOptions}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-item">
+                <label class="form-item-label form-required">营销类型</label>
+                <div class="form-control-wrap">
+                    <select name="actType" class="form-control form-item-select">
+                        <option class="form-item-option" value>请选择</option>
+                        @{useScenesOptions}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-item form-item-activitySceneWrap"  style="display: none">
+                <label class="form-item-label form-required">应用场景</label>
+                <div class="form-control-wrap checkbox activitySceneWrap">
+                @{applyScenesCheckeds}
+                </div>
+            </div>
+            <div class="form-group form-item form-item-datetimepicker">
+                <label class="form-item-label form-required">执行时间</label>
+                <div class="form-control-wrap radio">
+                    <label class="form-radio-label">
+                        <input type="radio" name="immediating" value="1" >立即执行
+                    </label>
+                    <label class="form-radio-label">
+                        <input type="radio" name="immediating" value="0" checked="">自定义时间
+                    </label>
+                    <span class="form-label-datetimepicker">
+                        <input type="text" name="immediateTime" class="form-control form-item-input custom-datetime" name="" placeholder="请选择执行时间，精确到分">
+                    </span>
+                </div>
+            </div>
+            <div class="form-group form-item">
+                <label class="form-item-label form-required">有效期</label>
+                <div class="form-control-wrap radio"> 
+                    <span class="form-label-datetimepicker">
+                       <input type="text" class="form-control form-item-input validity-datetime" name="expireTime" placeholder="选择有效期" >
+                    </span>  
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+
+// CommonTools.dialog.init();
+// CommonTools.dialog.show();
+
+
+
+//渲染树
+var obj = {
+    value:["全站用户"],
+    type:"全站用户",
+    name:"userType",
+    data:[{
+         count:[100000],
+         rate1:[100],
+         rate2:[100],
+         select:[false]
+     }],
+    children:{
+        value:['男','女','未知'],
+        type:"性别",
+        name:"gender",
+        data:[{
+                count:[100,200,200],
+                rate1:[20,40,40],
+                rate2:[20,40,40],
+                select:[false,false,false]
+            }],
+        children:{
+            value:['活跃','高危','沉睡','流失'],
+            type:"活跃度",
+            name:"active",
+            data:[{
+                    count:[200,200,200,200],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1],
+                    select:[false,false,false,false]
+                },{
+                    count:[100,200,200,100],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1],
+                    select:[false,false,false,false]
+                },{
+                    count:[100,200,200,100],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1],
+                    select:[false,false,false,false]
+                }]
+        }
+    }
+}
+
+
+// var pennelEvent = {
+//     creat:function(d){
+//         var creatGroupDialogOpt = {
+//             itemTemplate : $('#tlp-createGroup-item').html(),
+//             body : $('#tlp-createGroup').html(),
+//             data:d
+//         }
+//         creatGroupDialog.init(creatGroupDialogOpt);
+//         console.log(d);
+//     },
+//     join:function(d){
+//         var joinGroupDialogOpt = {
+//             data:d,
+//             body:$('#tlp-joinGroup').html(),
+//             itemTemplate:$('#tlp-joinGroup-item').html(),
+//             joinView:$('#tlp-joinGroup-join').html(),
+//             createView:$('#tlp-joinGroup-create').html()
+//         }
+//         joinGroupDialog.init(joinGroupDialogOpt);
+//         console.log(d);
+//     },
+//     clickItemCb:function(type){
+//        levelTree.defaultLevel(type);
+//     },
+//     addItemCb:function (type) {
+//         levelTree.selectLevel(type);
+//     }
+// }
+// var handler = {
+//     clickLevel:function (data,flag,type) {
+//         var obj = {};
+//         obj.datatype = data.datatype;
+//         obj.count = data.levelData.count;
+//         var typeArr = obj.datatype.split(',');
+//         if(typeArr.length !=1){
+//            typeArr.shift(); 
+//         }
+        
+//         obj.typeDataArr = [];
+//         $.each(typeArr, function(index, val) {
+//             obj.typeDataArr.push({type:val.split(':')[0],value:val.split(':')[1]})
+//         });
+//         console.log(obj);
+//         obj.datatype = obj.datatype.replace(/\,|\:/g,'');
+//         var events = ['addItem','removeItem'];
+//         bottomPanel[events[flag]](obj,$("#j-levelBottom"),pennelEvent,type);
+//     }
+// }
+// levelTree.init(treeData,$('#j-levelTree'),{sideRoot:$("#j-levelSide"),renderSide:true,handler:handler});
+
+</script>
+<script type="text/javascript" src="../js/topSelect.js"></script>
+<script type="text/javascript" src="../js/sidePanel.js"></script>
+<script type="text/javascript" src="../js/levelTree.js"></script>
+<script type="text/javascript" src="../js/bottomPanel.js"></script>
+<script type="text/javascript" src="../js/dialog.js"></script>
+<script type="text/javascript" src="../js/userGroupDrill.js"></script>
+
+</html>

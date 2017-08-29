@@ -1,0 +1,122 @@
+body.panel-botttom-on {
+    padding-bottom: 240px;
+}
+
+@mixin toe {
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    line-height: 24px;
+    height: 24px;
+}
+
+.level-bottom {
+    position: fixed;
+    width: 100%;
+    padding: 20px 30px 10px;
+    background: rgba(0, 0, 0, 0.5);
+    left: 50%;
+    transform: translate(-50%, 0);
+    display: none;
+    color: #fff;
+    font-family: microsoft yahei;
+    bottom: 0;
+    z-index: 2;
+    $root: '.level-bottom';
+    &-wrap {
+        margin: 0 0 0 120px;
+    	position: relative;
+    }
+    &-hd {
+        font-size: 16px;
+    }
+    &-bd {
+        padding-top: 10px;
+    }
+    &-item {
+        min-width: 150px;
+        max-width: 200px;
+        height: 86px;
+        padding: 5px 6px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 15px 10px 0;
+        cursor: pointer;
+        background: rgb(69, 106, 220); 
+        overflow-y:auto;
+        #{$root}-item-type {
+            @include toe;
+        }
+    }
+    &-itemWrap {
+        overflow-y: auto;
+        min-height: 100px;
+        max-height: 200px;
+        margin-right: 180px;
+    }
+    &-item1 {
+        
+    }
+    &-item2 {
+        
+    }
+    &-item3 {
+         
+    }
+    &-item4 {
+         
+    }
+    &-item5{
+
+    }
+    &-item6,
+    &-item7,
+    &-item8,
+    &-item9 {
+        text-indent: 0;
+        .level-bottom-item-type { 
+        	font-size: 12px;
+        	line-height: 20px;
+        }
+    }
+    &-handle { 
+        height: 100px;
+        width: 150px;
+        vertical-align: middle;
+        position: absolute;
+	    right: 0;
+	    top: 30px;
+    }
+    &-ctrl {
+        width: 100%;
+        display: block;
+        height: 38px;
+        line-height: 38px;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        border: 0;
+        padding: 0;
+        color: #fff;
+    }
+    &-ctrl:nth-child(odd) {
+        margin-bottom: 10px;
+        background: #96d44b;
+    }
+    &-ctrl:nth-child(even) {
+        background: #45c8dc;
+    }
+    &-create {
+        #{$root}-ctrl3,
+        #{$root}-ctrl4 {
+            display: none;
+        }
+    }
+    &-change {
+        #{$root}-ctrl1,
+        #{$root}-ctrl2 {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <title>人群钻取</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/base.css">
+    <script type="text/javascript" src="../../../assets/libs/libs.js"></script>
+    <script type="text/javascript" src="../../../assets/js/base.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../css/userGroupDrill.css">
+</head>
+<body>
+   
+    <div class="g-wrap">
+        <!--头部 S-->
+        <div class="g-hd">
+            <h1 class="g-hd-title pull-left">人群钻取</h1>
+            <i class="icon icon-asterisk pull-left g-hd-setting" data-toggle="dialog-open" data-target="#j-side-panel"></i>
+            <span class="g-hd-tips">数据更新于：2016-09-30 9:00:00</span>
+            
+        </div>
+        <!--头部 E-->
+
+        <!--内容 S-->
+        <div class="g-bd">
+            <!--条件筛选 start -->
+            <div class="panel panel-default panel-select-panel-down" id="j-panel-select">
+                <div class="panel-heading">
+                    <div class="panel-title clearfix">
+                        <div class="pull-left">
+                            <h2 class="panel-title-name">条件筛选</h2>
+                        </div>
+                        <a class="btn btn-panelOpenCtrl btn-default btn-up pull-right"><em class="icon  icon-angle-up"></em>收起</a>
+                        <a class="btn btn-panelOpenCtrl btn-default btn-down pull-right"><em class="icon  icon-angle-down"></em>展开</a>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <div class="form-inline cui-form-inline" id="j-drill-wrap">
+                        <div class="drill-item form-group form-item">
+                            <div class="form-control-wrap">
+                                <select class="form-control form-item-select">
+                                    <optgroup label="用户信息">
+                                        <option value="是否主账号">是否主账号</option>
+                                        <option value="四大人群">四大人群</option>
+                                        <option value="性别">性别</option>
+                                    </optgroup>
+                                    <optgroup label="用户行为">
+                                        <option value="最后访问时间">最后访问时间</option>
+                                        <option value="最后下单时间">最后下单时间</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <span class="drill-item-text">等于</span>
+                            <div class="form-control-wrap">
+                                <div class="form-item-inputcheckbox form-item-inputcheckbox-0">
+                                   
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-add btn-default">且</button>
+                        </div>
+                    </div>
+                        
+                </div>
+            </div>
+            <!--条件筛选 end -->
+
+            <!--筛选结构树 start -->
+            <div class="panel panel-default panel-tree">
+                <div class="level-outter">
+                    <div id="j-levelTree" class="level-wrap"></div>
+                    <div id="j-levelSide" class="level-side"></div>                    
+                </div>
+            </div>
+            
+            <!--筛选结构树 end -->
+            <!--底部已选择人群对话框 start-->
+            <div class="level-bottom" id="j-levelBottom">
+               
+            </div>
+            <!--底部已选择人群对话框 end-->
+           
+            
+            <!-- start-->
+            <!-- end-->
+
+        </div>
+        <!--内容 E-->
+    </div>
+    <!--右侧弹窗 start-->
+    <div class="side-panel" id="j-side-panel" style="display: none;">
+        <div class="side-panel-box">
+           <div class="side-panel-hd">
+               <i class="side-panel-icon icon icon-reorder"></i><div class="side-panel-title">钻取结构图</div>
+           </div>
+           <div class="side-panel-bd">
+                 <!--指标选择 start-->
+                 <div class="level-contruct-floor level-contruct-floor1">
+                    <div class="level-contruct-ctrl level-contruct-ctrl-parent">
+                        <div class="level-contruct-ctrl-hd">指标类目</div>
+                        <ul class="level-contruct-ctrl-bd">
+                        </ul>
+                    </div>
+                    <div class="level-contruct-ctrl level-contruct-ctrl-child">
+                        <div class="level-contruct-ctrl-hd">指标选择(最多<span class="max">5</span>个)</div>
+                        <ul class="level-contruct-ctrl-bd evel-contruct-ctrl-bd-checkList">
+                            
+                        </ul>
+                    </div>
+                </div>
+                <!--指标选择 end-->
+                <!--拖动指标 start-->
+                <div class="level-contruct-floor level-contruct-floor2">
+                    <div class="level-contruct-ctrl level-contruct-ctrl2">
+                        <div class="level-contruct-ctrl-hd">指标类目(可手动拖动改变顺序)</div>
+                        <ul class="level-contruct-ctrl-bd level-contruct-drag">
+                            
+                        </ul>
+                    </div>
+                </div>
+                <!--拖动指标 end-->
+            </div>
+        </div>
+    </div>
+    <!--右侧弹窗 end-->
+
+<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;"> 
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+            <div class="modal-title" id="myModalLabel">生成人群</div>
+          </div>
+          <div class="modal-body">
+               <div  class="form-horizontal cui-form-horizontal">
+                    <div class="modal-actiontype form-control-wrap radio">
+                        <label class="form-radio-label">
+                            <input type="radio" name="blankRadio"" value="option1">生成独立人群
+                       </label>
+                        <label class="form-radio-label">
+                            <input type="radio" name="blankRadio"" value="option1">生成合并人群
+                       </label>
+                    </div>
+                    <div class="dialog-drill-wrap">
+                        <div class="dialog-drill-item">
+                            <div class="dialog-drill-item-type">
+                                <span class="dialog-drill-item-type-label">已选择条件</span>
+                                <span class="dialog-drill-item-type-text">性别:男士</span>
+                                <span class="dialog-drill-item-type-text">活跃度:高危</span>
+                            </div>
+                            <div class="dialog-drill-item-type">
+                                <span class="dialog-drill-item-type-label">已选择条件</span>
+                                <span class="dialog-drill-item-type-text">性别:男士</span>
+                                <span class="dialog-drill-item-type-text">活跃度:高危</span>
+                            </div>
+                            <div class="form-group form-item">
+                                <label class="form-item-label form-required">人群名称</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control form-item-input" name="" placeholder="支持汉字字母下划线，最大20个字符">
+                                    <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要输入内容</i></span>
+                                </div>
+                            </div>
+                            <!--
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">业务场景</label>
+                                <div class="form-control-wrap">
+                                    <select name="" id="" class="form-control form-item-select">
+                                        <option class="form-item-option" value="1">1</option>
+                                        <option class="form-item-option" value="2">2</option>
+                                        <option class="form-item-option" value="3">3</option>
+                                    </select>
+                                    <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">使用场景</label>
+                                <div class="form-control-wrap">
+                                    <select name="" id="" class="form-control form-item-select">
+                                        <option class="form-item-option" value="1">1</option>
+                                        <option class="form-item-option" value="2">2</option>
+                                        <option class="form-item-option" value="3">3</option>
+                                    </select>
+                                    <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">执行时间</label>
+                                <div class="form-control-wrap radio">
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">立即执行
+                                    </label>  
+                                    <label class="form-radio-label form-label-datetimepicker">
+                                       <input type="radio" name="blankRadio"" value="option1">自定义时间
+                                       <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+                                    </label>
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">有效期</label>
+                                <div class="form-control-wrap radio">
+                                    <label class="form-radio-label form-label-datetimepicker">
+                                       <input type="radio" name="blankRadio"" value="option1">有效期至
+                                       <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+                                    </label> 
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">永久有效
+                                    </label>  
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">自动更新</label>
+                                <div class="form-control-wrap radio">
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">是
+                                    </label>
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">否
+                                    </label>
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="dialog-group-wrap group-wrap">
+                        <div class="group-hd">
+                            <a class="btn btn-success"><em class="icon icon-group"></em>选择组</a>
+                            <a class="btn btn-default"><em class="icon icon-leaf"></em>创建组</a>
+                        </div>
+                        <div class="group-bd">
+                            <div class="form-group form-item">
+                                <label class="form-item-label form-item-label-short form-required">选择人群组</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control form-item-input" name="" placeholder="支持汉字字母下划线，最大20个字符">
+                                    <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要输入内容</i></span>
+                                </div>
+                                <div class="group-infor">
+                                    <p class="group-text">已添加人群（可编辑人群优先级，系统将按照顺序对人群去重）</p>
+                                    <div class="group-panel">
+                                        <div class="group-item">
+                                            <input type="text" class="group-item-index" value="1">
+                                            <span class="group-item-text">雅思蓝带偏好人群</span>
+                                            <span class="group-item-ctrl">x</span>
+                                        </div>
+                                        <div class="group-item">
+                                            <input type="text" class="group-item-index" value="2">
+                                            <span class="group-item-text">雅思蓝带偏好人群</span>
+                                            <span class="group-item-ctrl">x</span>
+                                        </div>
+                                        <div class="group-item">
+                                            <input type="text" class="group-item-index" value="3">
+                                            <span class="group-item-text">雅思蓝带偏好人群</span>
+                                            <span class="group-item-ctrl">x</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-bd">
+                            <div class="form-group form-item">
+                                <label class="form-item-label form-required">人群组名称</label>
+                                <div class="form-control-wrap">
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control form-item-input" name="" placeholder="支持汉字字母下划线，最大20个字符">
+                                        <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要输入内容</i></span>
+                                    </div>
+                                    <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">使用场景</label>
+                                <div class="form-control-wrap">
+                                    <select name="" id="" class="form-control form-item-select">
+                                        <option class="form-item-option" value="1">1</option>
+                                        <option class="form-item-option" value="2">2</option>
+                                        <option class="form-item-option" value="3">3</option>
+                                    </select>
+                                    <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">执行时间</label>
+                                <div class="form-control-wrap radio">
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">立即执行
+                                    </label>  
+                                    <label class="form-radio-label form-label-datetimepicker">
+                                       <input type="radio" name="blankRadio"" value="option1">自定义时间
+                                       <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+                                    </label>
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">有效期</label>
+                                <div class="form-control-wrap radio">
+                                    <label class="form-radio-label form-label-datetimepicker">
+                                       <input type="radio" name="blankRadio"" value="option1">有效期至
+                                       <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+                                    </label> 
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">永久有效
+                                    </label>  
+                                </div>
+                            </div>
+                           <div class="form-group form-item">
+                                <label class="form-item-label form-required">自动更新</label>
+                                <div class="form-control-wrap radio">
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">是
+                                    </label>
+                                    <label class="form-radio-label">
+                                       <input type="radio" name="blankRadio"" value="option1">否
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+               </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+            <button type="button" class="btn btn-primary btn-submit">提交</button>
+          </div>
+        </div>
+      </div>
+</div>
+
+</body>
+
+
+<!--人群透视图 模板-->
+
+<script type="text/javascript" src="../js/userGroupDrill.js"></script>
+<script type="text/tempalte" id="tlp-createGroup">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <div class="modal-title" id="myModalLabel">生成人群</div>
+    </div>
+    <div class="modal-body">
+        <div  class="form-horizontal cui-form-horizontal">
+            <div class="modal-actiontype form-control-wrap radio">
+                <label class="form-radio-label">
+                    <input type="radio" name="blankRadio"" value="option1">生成独立人群
+               </label>
+                <label class="form-radio-label">
+                    <input type="radio" name="blankRadio"" value="option1">生成合并人群
+               </label>
+            </div>
+            <div class="dialog-drill-wrap">
+                        
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/tempalte" id="tlp-createGroup-item">
+<div class="dialog-drill-item">
+    <div class="dialog-drill-item-type">
+        <span class="dialog-drill-item-type-label">已选择条件</span>
+        <span class="dialog-drill-item-type-text">性别:男士</span>
+        <span class="dialog-drill-item-type-text">活跃度:高危</span>
+    </div>
+    <div class="dialog-drill-item-type">
+        <span class="dialog-drill-item-type-label">已选择条件</span>
+        <span class="dialog-drill-item-type-text">性别:男士</span>
+        <span class="dialog-drill-item-type-text">活跃度:高危</span>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">人群名称</label>
+        <div class="form-control-wrap">
+            <input type="text" class="form-control form-item-input" name="" placeholder="支持汉字字母下划线，最大20个字符">
+            <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要输入内容</i></span>
+        </div>
+    </div>
+
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">业务场景</label>
+        <div class="form-control-wrap">
+            <select name="" id="" class="form-control form-item-select">
+                <option class="form-item-option" value="1">1</option>
+                <option class="form-item-option" value="2">2</option>
+                <option class="form-item-option" value="3">3</option>
+            </select>
+            <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">使用场景</label>
+        <div class="form-control-wrap">
+            <select name="" id="" class="form-control form-item-select">
+                <option class="form-item-option" value="1">1</option>
+                <option class="form-item-option" value="2">2</option>
+                <option class="form-item-option" value="3">3</option>
+            </select>
+            <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">执行时间</label>
+        <div class="form-control-wrap radio">
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">立即执行
+            </label>  
+            <label class="form-radio-label form-label-datetimepicker">
+               <input type="radio" name="blankRadio"" value="option1">自定义时间
+               <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+            </label>
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">有效期</label>
+        <div class="form-control-wrap radio">
+            <label class="form-radio-label form-label-datetimepicker">
+               <input type="radio" name="blankRadio"" value="option1">有效期至
+               <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+            </label> 
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">永久有效
+            </label>  
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">自动更新</label>
+        <div class="form-control-wrap radio">
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">是
+            </label>
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">否
+            </label>
+        </div>
+    </div>
+</div>
+</script>
+<script type="text/tempalte" id="tlp-JoinGroup">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <div class="modal-title" id="myModalLabel">生成人群</div>
+    </div>
+    <div class="modal-body">
+        <div  class="form-horizontal cui-form-horizontal">
+            <div class="modal-actiontype form-control-wrap radio">
+                <label class="form-radio-label">
+                    <input type="radio" name="blankRadio"" value="option1">独立加入群组
+               </label>
+                <label class="form-radio-label">
+                    <input type="radio" name="blankRadio"" value="option1">合并加入群组
+               </label>
+            </div>
+            <div class="dialog-group-wrap group-wrap">
+                  <div class="group-hd">
+                        <a class="btn btn-success"><em class="icon icon-group"></em>选择组</a>
+                        <a class="btn btn-default"><em class="icon icon-leaf"></em>创建组</a>
+                  </div>
+                  <div class="group-bd">
+                      
+                  </div>      
+            </div>
+        </div>
+    </div>
+</script>
+<!--加入已有人群-->
+<script type="text/tempalte" id="tlp-JoinGroup-join">
+    <div class="form-group form-item">
+        <label class="form-item-label form-item-label-short form-required">选择人群组</label>
+        <div class="form-control-wrap">
+            <input type="text" class="form-control form-item-input" name="" placeholder="支持汉字字母下划线，最大20个字符">
+            <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要输入内容</i></span>
+        </div>
+        <div class="group-infor">
+            <p class="group-text">已添加人群（可编辑人群优先级，系统将按照顺序对人群去重）</p>
+            <div class="group-panel">
+                <div class="group-item">
+                    <input type="text" class="group-item-index" value="1">
+                    <span class="group-item-text">雅思蓝带偏好人群</span>
+                    <span class="group-item-ctrl">x</span>
+                </div>
+                <div class="group-item">
+                    <input type="text" class="group-item-index" value="2">
+                    <span class="group-item-text">雅思蓝带偏好人群</span>
+                    <span class="group-item-ctrl">x</span>
+                </div>
+                <div class="group-item">
+                    <input type="text" class="group-item-index" value="3">
+                    <span class="group-item-text">雅思蓝带偏好人群</span>
+                    <span class="group-item-ctrl">x</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--新建人群组-->
+<script type="text/tempalte" id="tlp-JoinGroup-create">
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">人群组名称</label>
+        <div class="form-control-wrap">
+            <div class="form-control-wrap">
+                <input type="text" class="form-control form-item-input" name="" placeholder="支持汉字字母下划线，最大20个字符">
+                <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要输入内容</i></span>
+            </div>
+            <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">使用场景</label>
+        <div class="form-control-wrap">
+            <select name="" id="" class="form-control form-item-select">
+                <option class="form-item-option" value="1">1</option>
+                <option class="form-item-option" value="2">2</option>
+                <option class="form-item-option" value="3">3</option>
+            </select>
+            <span class="form-item-tooltips"><span class="icon icon-exclamation-sign"></span><i>要选择其中一个场景</i></span>
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">执行时间</label>
+        <div class="form-control-wrap radio">
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">立即执行
+            </label>  
+            <label class="form-radio-label form-label-datetimepicker">
+               <input type="radio" name="blankRadio"" value="option1">自定义时间
+               <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+            </label>
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">有效期</label>
+        <div class="form-control-wrap radio">
+            <label class="form-radio-label form-label-datetimepicker">
+               <input type="radio" name="blankRadio"" value="option1">有效期至
+               <input type="text" class="form-control form-item-input" name="" placeholder="时间输入" readonly="">
+            </label> 
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">永久有效
+            </label>  
+        </div>
+    </div>
+    <div class="form-group form-item">
+        <label class="form-item-label form-required">自动更新</label>
+        <div class="form-control-wrap radio">
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">是
+            </label>
+            <label class="form-radio-label">
+               <input type="radio" name="blankRadio"" value="option1">否
+            </label>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+
+// CommonTools.dialog.init();
+// CommonTools.dialog.show();
+//顶部选择
+var panelSelectOption = {
+    root:$('#j-panel-select'),
+    data:[
+        {
+            type:'用户信息',
+            selectData:[
+                {text:'是否主账号',val:'1'},
+                {text:'四大人群',val:'2'},
+                {text:'性别',val:'3'}
+            ],
+            option:[
+                {value:'1',text:'按时打算去问人',checked:false},
+                {value:'0',text:'按时打算去问人',checked:false},
+                {value:'31',text:'按时打算去问人',checked:false},
+                {value:'2',text:'222',checked:true}
+            ]
+        }
+    ]
+}
+var data = [
+        {value:'1',text:'按时打算去问人',checked:false},
+        {value:'0',text:'按时打算去问人',checked:false},
+        {value:'31',text:'按时打算去问人',checked:false},
+        {value:'2',text:'222',checked:true}
+    ]
+
+panelSelect.init(panelSelectOption)
+
+$('.form-item-inputcheckbox-0').selectCheckbox({data:data});
+
+var checckPanelData = [
+    {
+        type:'用户信息',
+        select:true,
+        children:[
+            {text:'四大群',value:'1',checked:true},
+            {text:'活跃度',value:'2',checked:false},
+            {text:'性别',value:'3',checked:true}
+        ]
+    },
+    {
+        type:'用户行为',
+        select:false,
+        children:[
+            {text:'会员',value:'4',checked:false}
+        ]
+    },
+    {
+        type:'渠道特征',
+        select:false,
+        children:[]
+    }
+]
+var checkPanelOption = {
+    data:checckPanelData,
+    maxSelect:5,
+    root:$('.level-contruct-floor1'),
+    checkedFun:dragPanel.add,
+    unCheckedFun:dragPanel.sub
+}
+checkPanel.init(checkPanelOption);
+
+
+/*拖动*/
+var dragOpt = {
+    wrap:$('.level-contruct-drag'),
+    data:[],
+    itemHeight:38
+}
+$.each(checkPanelOption.data, function(index, val) {
+     $.each(val.children, function(index, val) {
+        if(val.checked){
+            dragOpt.data.push(val);
+        }
+     });
+});
+dragPanel.init(dragOpt); 
+
+//渲染树
+var obj = {
+    value:["全站用户"],
+    type:"全站用户",
+    name:"userType",
+    data:[{
+         count:[100000],
+         rate1:[100],
+         rate2:[100]
+     }],
+    children:{
+        value:['男','女','未知'],
+        type:"性别",
+        name:"gender",
+        data:[{
+                count:[100,200,200],
+                rate1:[20,40,40],
+                rate2:[20,40,40]
+            }],
+        children:{
+            value:['活跃','高危','沉睡','流失'],
+            type:"活跃度",
+            name:"active",
+            data:[{
+                    count:[200,200,200,200],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1]
+                },{
+                    count:[100,200,200,100],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1]
+                },{
+                    count:[100,200,200,100],
+                    rate1:[25,25,25,25],
+                    rate2:[20,25,40,1]
+                }]
+        }
+    }
+}
+var pennelEvent = {
+    creat:function(d){
+        console.log(d);
+    },
+    join:function(d){
+        console.log(d);
+    },
+    clickItemCb:function(type){
+       levelTree.defaultLevel(type);
+    }
+}
+var handler = {
+    clickLevel:function (data,flag) {
+        var obj = {};
+        obj.datatype = data.datatype;
+        obj.count = data.levelData.count;
+        var typeArr = obj.datatype.split(',');
+        if(typeArr.length !=1){
+           typeArr.shift(); 
+        }
+        
+        obj.typeDataArr = [];
+        $.each(typeArr, function(index, val) {
+            obj.typeDataArr.push({type:val.split(':')[0],value:val.split(':')[1]})
+        });
+        console.log(obj);
+        obj.datatype = obj.datatype.replace(/\,|\:/g,'');
+        var events = ['addItem','removeItem'];
+        bottomPanel[events[flag]](obj,$("#j-levelBottom"),pennelEvent);
+    }
+}
+levelTree.init(obj,$('#j-levelTree'),{sideRoot:$("#j-levelSide"),renderSide:true,handler:handler});
+
+</script>
+
+</html>

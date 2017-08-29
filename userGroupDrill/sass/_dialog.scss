@@ -1,0 +1,47 @@
+.modal{
+    display: block;
+    &-dialog{
+    	width: 800px;
+    	.form-radio-label{
+    	}
+    	.form-label-datetimepicker{
+			input[type='radio']{
+				top: 7px;
+			}
+		}
+    }
+    &-actiontype{
+    	text-align: center;
+    }
+}
+
+.dialog-drill{
+	&-item{
+		margin-top: 10px;background: #f0f3f6;
+		padding: 10px 0;margin-bottom: 20px;
+		border-radius: 10px;
+		&-type{
+			font-size: 14px;text-indent: 50px;padding:3px;line-height: 2;
+			border-radius: 6px;
+			&-text{
+				margin-left: 5px;
+			}
+		}
+	}
+}
+.modal-dialog{
+	width: 860px;
+}
+.form-control-wrap{
+	min-width: 140px;
+}
+.createView .form-item-datetimepicker{
+	display: block;
+}
+.form-item-datetimepicker .form-label-datetimepicker{display: none;}
+.selectGroup-submit{
+	padding: 7px 12px;display: none;
+}
+.cui-form-horizontal .form-item  .activitySceneWrap{
+	max-width: 360px;vertical-align: top;
+}
